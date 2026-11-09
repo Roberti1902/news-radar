@@ -1,0 +1,9 @@
+httpx
+feedparser
+pydantic
+anthropic
+rich
+apscheduler
+rapidfuzz
+pyyaml
+pytest

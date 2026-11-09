@@ -1,0 +1,11 @@
+.venv/
+data/
+logs/
+.env
+__pycache__/
+# private Listen (Bestand, Watchlist) – nur die *.example.yaml gehören ins Repo
+config/universe.yaml
+config/exposure.yaml
+.pytest_cache/
+# Tests nutzen noch die private universe.yaml (Bestand) und laufen deshalb nur lokal
+tests/

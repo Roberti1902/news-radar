@@ -1,0 +1,31 @@
+# Beispiel für config/universe.yaml – kopieren nach config/universe.yaml und mit eigenen Werten füllen.
+# Die echte universe.yaml (Bestand, Watchlist) steht in .gitignore und ist nicht im Repo.
+# quote_symbol: Symbol für Finnhub /quote (Free-Tier liefert nur US-Kurse).
+
+holdings:        # eigener Bestand: erzeugt die schärfsten Signale
+  AAPL: {name: Apple, aliases: [Apple, Apple Inc], isin: US0378331005}
+
+etf_core: []     # nur Info – ETFs erzeugen keine Einzelsignale
+
+watchlist:
+  MSFT: {name: Microsoft, aliases: [Microsoft], isin: US5949181045}
+
+# Firmen im Themenuniversum, auf keiner Liste -> Kategorie CANDIDATE (strengere Schwelle, max. 5/Tag).
+candidates:
+  NVDA: {name: Nvidia, aliases: [Nvidia]}
+  ASML: {name: ASML, aliases: [ASML]}
+
+themes:   # Schlüsselwörter (EN/DE) je Thema entlang der Wertschöpfungskette
+  ai_datacenter: [data center, data centers, datacenter, hyperscaler, hyperscalers, AI infrastructure, AI capex, GPU, GPUs, Rechenzentrum, Rechenzentren]
+  semis: [semiconductor, semiconductors, chipmaker, foundry, wafer, lithography, EUV, HBM, DRAM, NAND, memory chip, Halbleiter]
+  photonics_network: [optical, photonics, transceiver, transceivers, co-packaged optics, fiber optic, 800G, 1.6T, networking]
+  ai_power: [power demand, electricity demand, power purchase agreement, PPA, behind-the-meter, fuel cell, gas turbine, Strombedarf]
+  nuclear: [nuclear, SMR, small modular reactor, uranium, HALEU, enrichment, reactor, Kernkraft, Atomkraft]
+  energy_grid: [grid, transmission, HVDC, high-voltage, transformer, transformers, switchgear, substation, cable, cables, interconnector, Stromnetz, Netzausbau, Kabel]
+  water: [water utility, water infrastructure, desalination, wastewater, Wasser]
+  infrastructure: [infrastructure bill, infrastructure spending, IIJA, Infrastruktur]
+  space: [satellite, satellites, launch vehicle, spaceflight, orbit, Raumfahrt]
+  quantum: [quantum computing, quantum computer, qubit, qubits, Quantencomputer]
+  robotics: [robotics, humanoid, actuator, actuators, servo, reducer, harmonic drive, lidar, motion control, Robotik]
+  critical_minerals: [rare earth, rare earths, critical minerals, lithium, copper, gallium, germanium, magnet, magnets, Seltene Erden, Rohstoffe]
+  manufacturing: [reshoring, onshoring, factory, manufacturing, capex, industrial production, Industrie]

@@ -1,0 +1,23 @@
+{
+  "fx": {"_date": "2026-11-03", "USD": 1.082, "JPY": 162.4, "GBP": 0.874, "CHF": 0.938},
+  "quotes": {
+    "PRY.MI": {"price": 118.40, "change_pct": -0.8, "minutes_ago": 15},
+    "WDC": {"price": 74.20, "change_pct": -3.1, "minutes_ago": 15},
+    "POWL": {"price": 312.50, "change_pct": 2.4, "minutes_ago": 15},
+    "TLN": {"price": 268.10, "change_pct": 1.7, "minutes_ago": 15},
+    "AMZN": {"price": 182.10, "change_pct": 0.4, "minutes_ago": 15}
+  },
+  "xetra": {
+    "IT0004176001": "PRYSMIAN S.P.A.   EO 0,10",
+    "US0231351067": "AMAZON.COM INC.  DL-,01",
+    "US5533681012": "MP MATERIALS A  DL -,0001",
+    "US55024U1097": "LUMENTUM HLDGS IN.DL-,001",
+    "US1717793095": "CIENA CORP. NEW DL -,01",
+    "IE00BKVD2N49": "SEAGATE TEC.HLD.DL-,00001",
+    "US9581021055": "WESTERN DIGITAL  DL-,01",
+    "US21037T1097": "CONSTELLATION ENERGY",
+    "US0937121079": "BLOOM ENERGY A   DL-,0001",
+    "US7391281067": "POWELL IND. INC.  DL -,01"
+  },
+  "figi": {"TLN": "TALEN ENERGY CORP"}
+}

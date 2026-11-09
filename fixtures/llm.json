@@ -1,0 +1,53 @@
+{
+  "triage": {
+    "https://www.reuters.com/business/energy/prysmian-raises-2026-guidance-q3-backlog-2026-11-03/":
+      {"relevance": 0.92, "is_material": true, "event_type": "guidance", "tickers": ["PRY.MI"]},
+    "https://www.bloomberg.com/news/articles/2026-11-03/western-digital-cuts-outlook":
+      {"relevance": 0.88, "is_material": true, "event_type": "guidance", "tickers": ["WDC"]},
+    "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/section-232-grid-equipment":
+      {"relevance": 0.81, "is_material": true, "event_type": "macro", "tickers": []},
+    "https://www.reuters.com/business/energy/talen-amazon-expanded-deal-2026-11-03/":
+      {"relevance": 0.85, "is_material": true, "event_type": "product", "tickers": ["TLN", "AMZN"]},
+    "https://www.geekwire.com/2026/amazon-fresh-bothell/":
+      {"relevance": 0.15, "is_material": false, "event_type": "product", "tickers": ["AMZN"]}
+  },
+  "impact": {
+    "https://www.reuters.com/business/energy/prysmian-raises-2026-guidance-q3-backlog-2026-11-03/": {
+      "event_summary": "Q3: Auftragsbestand +12 %, Guidance 2026 angehoben",
+      "impacts": [{"ticker": "PRY.MI", "direction": "positive", "magnitude": "medium", "horizon": "weeks",
+                   "confidence": 0.78, "order": "first",
+                   "reason": "Höherer HV-Kabel-Backlog sichert Umsatz 2027 → Margenausweitung erwartet.",
+                   "facts_used": ["order backlog rose 12% in the third quarter", "raised its 2026 adjusted EBITDA guidance"]}]
+    },
+    "https://www.bloomberg.com/news/articles/2026-11-03/western-digital-cuts-outlook": {
+      "event_summary": "Ausblick Dezember-Quartal gesenkt: 2,6–2,7 Mrd. USD statt 2,9–3,0",
+      "impacts": [{"ticker": "WDC", "direction": "negative", "magnitude": "medium", "horizon": "weeks",
+                   "confidence": 0.74, "order": "first",
+                   "reason": "Schwächere Nearline-Bestellungen zweier Cloud-Kunden → Umsatz unter Vorgabe, Bewertung unter Druck.",
+                   "facts_used": ["revenue of $2.6 billion to $2.7 billion", "slower nearline orders from two cloud customers"]}]
+    },
+    "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/section-232-grid-equipment": {
+      "event_summary": "USTR: 25 % Zoll auf Transformatoren, Schaltanlagen, HV-Kabel ab 1.12.",
+      "impacts": [
+        {"ticker": "POWL", "direction": "positive", "magnitude": "high", "horizon": "months", "confidence": 0.74, "order": "first",
+         "reason": "Importzoll auf Schaltanlagen, US-Hersteller ausgenommen → Preissetzungsmacht und Marktanteil steigen.",
+         "facts_used": ["medium-voltage switchgear", "Domestic producers are exempt"]},
+        {"ticker": "PRY.MI", "direction": "negative", "magnitude": "medium", "horizon": "months", "confidence": 0.63, "order": "second",
+         "reason": "Zoll auf importierte HV-Kabel → EU-Exporte in die USA verteuert, Marge im US-Projektgeschäft sinkt.",
+         "facts_used": ["25% duties apply to imports of", "high-voltage cable from all countries"]},
+        {"ticker": "BE", "direction": "neutral", "magnitude": "low", "horizon": "months", "confidence": 0.4, "order": "second",
+         "reason": "Keine direkte Betroffenheit erkennbar → Wirkung unklar.", "facts_used": ["large power transformers"]}
+      ]
+    },
+    "https://www.reuters.com/business/energy/talen-amazon-expanded-deal-2026-11-03/": {
+      "event_summary": "Talen liefert AWS 1,9 GW Atomstrom bis 2042 (bisher 960 MW)",
+      "impacts": [
+        {"ticker": "TLN", "direction": "positive", "magnitude": "high", "horizon": "months", "confidence": 0.82, "order": "first",
+         "reason": "Verdoppelte Liefermenge bis 2042 → planbarer Umsatz, höhere Bewertung der Nuklearflotte.",
+         "facts_used": ["supply 1.9 gigawatts", "through 2042, up from 960 megawatts"]},
+        {"ticker": "AMZN", "direction": "neutral", "magnitude": "low", "horizon": "months", "confidence": 0.5, "order": "first",
+         "reason": "Stromsicherung für Rechenzentren → kaum messbare Wirkung auf Umsatz oder Marge.", "facts_used": ["to Amazon data centers"]}
+      ]
+    }
+  }
+}

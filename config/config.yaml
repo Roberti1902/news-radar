@@ -1,0 +1,107 @@
+interval_minutes: 30            # 30 oder 60; CLI --interval überschreibt
+timezone: Europe/Berlin
+db_path: data/news_radar.db
+dry_run_db_path: data/dry_run.db
+log_dir: logs
+first_run_backfill_hours: 6     # erster Lauf ohne gespeicherten Zeitstempel
+
+thresholds:
+  min_confidence: 0.6
+  min_magnitude: medium          # low | medium | high
+  candidate_min_confidence: 0.75
+  candidate_min_magnitude: high
+  candidate_max_per_day: 5
+  triage_min_relevance: 0.5
+
+dedup:
+  window_hours: 48
+  title_similarity: 88           # rapidfuzz token_set_ratio, 0–100
+novelty:
+  window_hours: 72
+
+llm:
+  provider: ollama               # ollama = lokal & kostenlos | anthropic = Claude-API (kostenpflichtig, braucht ANTHROPIC_API_KEY)
+  ollama_url: http://localhost:11434
+  ollama_timeout_s: 900          # pro Aufruf; 31B-Modell läuft teils auf der CPU
+  num_ctx: 16384                 # Kontextfenster (System + Exposure-Map + Batch)
+  triage_model: gemma3:12b       # passt in 12 GB VRAM; gemma4:31b ist genauer, aber ~4–10 min pro Aufruf. anthropic -> claude-haiku-5-5
+  impact_model: gemma3:12b       # anthropic -> claude-sonnet-5-5
+  triage_batch_size: 10
+  max_tickers_per_event: 8
+  max_daily_usd: 2.0             # Env MAX_DAILY_LLM_USD überschreibt
+  server_fallbacks: true         # Sonnet 5.5: bei Refusal serverseitig auf passendes Modell ausweichen
+  prices_per_mtok:               # USD pro 1 Mio. Token (Stand 2026-10, Anthropic-Preisliste)
+    claude-haiku-5-5: {input: 0.10, output: 0.50}
+    claude-sonnet-5-5: {input: 2.00, output: 10.00}
+    claude-opus-5-5: {input: 4.00, output: 20.00}
+
+http:
+  timeout_s: 20
+  retries: 3
+  host_intervals:                # Mindestabstand zwischen Requests pro Host in Sekunden
+    default: 0.5
+    www.sec.gov: 0.15            # SEC: max. 10 req/s
+    finnhub.io: 1.1              # Finnhub Free: 60/min (+ 30/s global)
+    api.gdeltproject.org: 5.5    # GDELT: 1 Request / 5 s
+    api.openfigi.com: 2.5        # OpenFIGI ohne Key: 25/min
+    api.marketaux.com: 1.0
+    data.alpaca.markets: 1.0
+    www.federalregister.gov: 1.0
+
+macro_topics:                    # Makro-/Geo-Events → Tickers über exposure.yaml: macro_sensitivity
+  rates_fed: [FOMC, Federal Reserve, Fed rate, Fed cuts, Fed raises, Fed holds, rate cut, rate hike, Powell]
+  rates_ecb: [ECB, EZB, European Central Bank, Lagarde, deposit rate]
+  rates_boj: [Bank of Japan, BoJ, Ueda]
+  us_data: [CPI, consumer prices, nonfarm payrolls, jobs report, PMI, ISM manufacturing]
+  tariffs: [tariff, tariffs, Zoll, Zölle, Section 232, Section 301, trade deal, USTR, duties]
+  export_controls: [export control, export controls, Entity List, chip export, Exportkontrolle, Exportkontrollen, Bureau of Industry and Security]
+  sanctions: [sanction, sanctions, Sanktionen]
+  middle_east_oil: [Iran, Strait of Hormuz, OPEC, crude oil, Brent, Ölpreis]
+  taiwan: [Taiwan Strait, Taiwan]
+  yen_carry: [yen carry, carry trade, Japanese banks, JGB, Japanese yen]
+  elections: [election, Wahl, Wahlen]
+  rare_earths: [rare earth, rare earths, Seltene Erden, NdPr, neodymium, gallium, germanium, antimony]
+  power_policy: [FERC, PJM, capacity auction, co-location, interconnection, 45U, production tax credit]
+
+sources:
+  # --- Aktiv: kostenlose RSS-Feeds (kein Key, kein HTML-Scraping), alle 30 min ---
+  - {name: BBC Business, type: rss, tier: 2, publisher: BBC, url: "https://feeds.bbci.co.uk/news/business/rss.xml"}
+  - {name: BBC World, type: rss, tier: 2, publisher: BBC, url: "https://feeds.bbci.co.uk/news/world/rss.xml"}
+  - {name: Investing.com Aktien, type: rss, tier: 2, publisher: Investing.com, url: "https://www.investing.com/rss/news_25.rss"}
+  - {name: Investing.com Wirtschaft, type: rss, tier: 2, publisher: Investing.com, url: "https://www.investing.com/rss/news_14.rss"}
+  - {name: Investing.com Rohstoffe, type: rss, tier: 2, publisher: Investing.com, url: "https://www.investing.com/rss/news_11.rss"}
+  - {name: CNBC Asia, type: rss, tier: 2, publisher: CNBC, url: "https://www.cnbc.com/id/19832390/device/rss/rss.html"}
+  - {name: Guardian Business, type: rss, tier: 2, publisher: The Guardian, url: "https://www.theguardian.com/business/rss"}
+  - {name: Guardian Stock Markets, type: rss, tier: 2, publisher: The Guardian, url: "https://www.theguardian.com/business/stock-markets/rss"}
+  - {name: Guardian World, type: rss, tier: 2, publisher: The Guardian, url: "https://www.theguardian.com/world/rss"}
+  - {name: FXStreet, type: rss, tier: 2, publisher: FXStreet, url: "https://www.fxstreet.com/rss/news"}
+
+  # --- Abgeschaltet (enabled: false). Wieder aktivieren, indem du die Zeile auf enabled: true setzt. ---
+  # --- Tier 1: offiziell ---
+  - {enabled: false, name: SEC EDGAR (Firmen), type: sec_company, tier: 1, forms: [8-K, 6-K, 10-Q]}
+  - {enabled: false, name: SEC EDGAR (aktuell), type: sec_current, tier: 1, forms: [8-K, 6-K, 10-Q]}
+  - {enabled: false, name: Fed, type: rss, tier: 1, publisher: Federal Reserve, url: "https://www.federalreserve.gov/feeds/press_monetary.xml"}
+  - {enabled: false, name: EZB, type: rss, tier: 1, publisher: EZB, url: "https://www.ecb.europa.eu/rss/press.html"}
+  - {enabled: false, name: BoJ, type: rss, tier: 1, publisher: Bank of Japan, url: "https://www.boj.or.jp/en/rss/whatsnew.xml"}
+  - {enabled: false, name: USTR, type: rss, tier: 1, publisher: USTR, url: "https://ustr.gov/rss.xml"}
+  - {enabled: false, name: EU-Kommission, type: rss, tier: 1, publisher: EU-Kommission, url: "https://ec.europa.eu/commission/presscorner/api/rss?language=en"}
+  - {enabled: false, name: BIS (Federal Register), type: federal_register, tier: 1, publisher: BIS, agency: industry-and-security-bureau}
+  # --- Tier 2: Finanzpresse ---
+  - {enabled: false, name: Finnhub, type: finnhub_company, tier: 2}
+  - {enabled: false, name: Finnhub News, type: finnhub_general, tier: 2, categories: [general, merger]}
+  - {enabled: false, name: Yahoo RSS, type: yahoo, tier: 2}
+  - {enabled: false, name: PR Newswire, type: rss, tier: 2, publisher: PR Newswire, url: "https://www.prnewswire.com/rss/news-releases-list.rss"}
+  - {enabled: false, name: Marketaux, type: marketaux, tier: 2}     # nur mit MARKETAUX_API_KEY
+  - {enabled: false, name: Alpaca, type: alpaca, tier: 2}           # nur mit ALPACA_API_KEY_ID + ALPACA_API_SECRET_KEY
+  # --- Tier 3: Geo/Makro-Breite (nur Signal nach Bestätigung durch Tier 1/2) ---
+  - enabled: false
+    name: GDELT
+    type: gdelt
+    tier: 3
+    queries:
+      - '"export controls" (chip OR semiconductor)'
+      - '(tariff OR tariffs) (transformer OR switchgear OR cable OR copper OR steel)'
+      - '"rare earth" (China OR export)'
+      - '(Iran OR Hormuz) oil'
+      - 'Taiwan (China OR military) semiconductor'
+      - '"data center" (power OR nuclear OR grid)'

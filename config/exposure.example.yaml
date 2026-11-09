@@ -1,0 +1,22 @@
+# Beispiel für config/exposure.yaml – kopieren nach config/exposure.yaml und je Bestands-/Watchlist-Ticker pflegen.
+# Die echte exposure.yaml steht in .gitignore. Namen in customers/suppliers/competitors werden im Text gesucht -> Zweitwirkung.
+
+AAPL:
+  themes: [semis, manufacturing]
+  countries: [US, CN, IN]
+  commodities: []
+  customers: []
+  suppliers: [TSMC, Foxconn]
+  competitors: [Samsung, Google, Microsoft]
+  macro_sensitivity: [rates_fed, tariffs]
+  notes: Beispiel – Lieferkette stark von Asien abhängig (Zölle).
+
+MSFT:
+  themes: [ai_datacenter]
+  countries: [US, EU]
+  commodities: []
+  customers: []
+  suppliers: [Nvidia]
+  competitors: [Amazon Web Services, Google Cloud]
+  macro_sensitivity: [rates_fed]
+  notes: Beispiel – Azure, KI-Capex.
